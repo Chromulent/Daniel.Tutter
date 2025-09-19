@@ -1,0 +1,1 @@
+Function GetStamp { Set-Clipboard -Value "$((Get-Date).ToString("1yyyy.MM.dd @ HHmm, "))" }

@@ -1,0 +1,17 @@
+Function Uninstall-Software {
+        Param(
+            [Parameter(Mandatory=$True,Position=0)][string]$Vendor,
+            [Parameter(Mandatory=$True,Position=1)][string]$Product
+        )
+    
+        $ProductGUID = (get-wmiobject Win32_Product | Sort-Object -Property Name |  Where-Object Vendor -match $Vendor).IdentifyingNumber
+        (get-process | ? { $_.mainwindowtitle -ne "" -and $_.processname -eq "$Prodcut" } )| stop-process -Force
+        $arrCheck = [bool]($ProductGUID -is [array]) ; 
+        if( ($arrCheck -eq $False) -and ($ProductGUID -ne $null) ){ Start-Process "C:\Windows\System32\msiexec.exe" -ArgumentList "/x $ProGUID /qn" }
+        if( ($arrCheck -eq $True)  -and ($ProductGUID -ne $null) ){ foreach ($ProGUID in $ProductGUID) { Start-Process "C:\Windows\System32\msiexec.exe" -ArgumentList "/x $ProGUID /qn" }
+        if( ($arrCheck -eq $False) -and ($ProductGUID -eq $null) ){ Write-Host("No Product with name available") -Fore Yellow } 
+        $ProductGUID = $null ; $ProGUID = $null }
+
+    }
+
+# Uninstall-Software -Vendor "" -Product ""
