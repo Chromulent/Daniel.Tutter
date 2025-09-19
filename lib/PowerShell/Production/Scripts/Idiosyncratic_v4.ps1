@@ -1397,15 +1397,6 @@ Set-Content -Path 'C:\Automation\Reboot.ps1' -Value {cmd /c shutdown -r -c " " -
     DISM /Online /Cleanup-Image /ScanHealth /NoRestart /Quiet
     DISM /Online /Cleanup-Image /RestoreHealth /NoRestart /Quiet
 
-# Set the Password for the Administration User Account.
-Write-Host('Setting User...') -Fore Gray
-$env:SVCUSER="ion"
-$env:SVCPASS='Gladiator2-Maven'
-$SecurePass=ConvertTo-SecureString $env:SVCPASS -AsPlainText -Force
-New-LocalUser -Name "$env:SVCUSER" -Password $SecurePass -AccountNeverExpires -UserMayNotChangePassword
-Set-LocalUser -Name "$env:SVCUSER" -PasswordNeverExpires $false
-cmd /c net localgroup Administrators /add ion
-
 # Reboot Confirmation Prompt, Yes, No, Cancel
 Add-Type -AssemblyName PresentationCore,PresentationFramework
 $msgBody = "Reboot the computer now?"
